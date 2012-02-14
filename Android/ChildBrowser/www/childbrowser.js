@@ -14,6 +14,7 @@ function ChildBrowser() {
 
 ChildBrowser.CLOSE_EVENT = 0;
 ChildBrowser.LOCATION_CHANGED_EVENT = 1;
+ChildBrowser.LOCATION_FINISHEDLOAD_EVENT = 1;
 
 /**
  * Display a new browser with the specified URL.
@@ -62,6 +63,9 @@ ChildBrowser.prototype._onEvent = function(data) {
     }
     if (data.type == ChildBrowser.LOCATION_CHANGED_EVENT && typeof window.plugins.childBrowser.onLocationChange === "function") {
         window.plugins.childBrowser.onLocationChange(data.location);
+    }
+    if (data.type == ChildBrowser.LOCATION_FINISHEDLOAD_EVENT && typeof window.plugins.childBrowser.onLocationFinished === "function") {
+        window.plugins.childBrowser.onLocationFinished(data.title,data.location);
     }
 };
 
