@@ -43,6 +43,7 @@ public class ChildBrowser extends Plugin {
     protected static final String LOG_TAG = "ChildBrowser";
     private static int CLOSE_EVENT = 0;
     private static int LOCATION_CHANGED_EVENT = 1;
+    private static int LOCATION_FINISHEDLOAD_EVENT = 2;
 
     private String browserCallbackId = null;
 
@@ -401,5 +402,20 @@ public class ChildBrowser extends Plugin {
                 Log.d("ChildBrowser", "This should never happen");
             }
         }
+        
+        @Override
+         public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view,url);
+	        try
+	        {
+		        JSONObject obj = new JSONOject();
+		        obj.put("type",LOCATION_FINISHEDLOAD_EVENT);
+		        obj.put("title",view.getTitle());
+                obj.put("location",url);
+		        sendUpdate(obj,true);
+	        }catch (JSONException e) {
+                Log.d("ChildBrowser", "This should never happen");
+            }
+      }
     }
 }
